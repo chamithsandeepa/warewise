@@ -12,24 +12,19 @@ const Product = () => {
   const [size, setSize] = useState("");
 
   const fetchProductData = () => {
-    const foundProduct = products.find((item) => item.id === productId); // Changed from item._id to item.id
-    if (foundProduct) {
-      setProductData(foundProduct);
-      // Set first image from imageUrls array with safety check
-      if (foundProduct.imageUrls && foundProduct.imageUrls.length > 0) {
-        setImage(foundProduct.imageUrls[0]);
+    products.map((item) => {
+      if (item._id === productId) {
+        setProductData(item);
+        setImage(item.image[0]);
+        console.log(item);
+        return null;
       }
-    } else {
-      setProductData(null);
-      setImage("");
-    }
+    });
   };
 
   useEffect(() => {
-    if (products && products.length > 0) {
-      fetchProductData();
-    }
-  }, [productId, products]);
+    fetchProductData();
+  }, [productId]);
 
   return productData ? (
     <div className="border-t-2 pt-10 transition-opacity ease-in duration-500 opacity-100">
@@ -109,7 +104,7 @@ const Product = () => {
             </div>
           </div>
           <button
-            onClick={() => addToCart(productData.id, size)} // Changed from productData._id to productData.id
+            onClick={() => addToCart(productData._id, size)}
             className="bg-black text-white px-8 py-3 text-sm active:bg-gray-700 disabled:bg-gray-400"
             disabled={
               !size && productData.sizes && productData.sizes.length > 0

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { backendURL } from "../App";
 import { toast } from "react-toastify";
 
-const Login = (setToken) => {
+const Login = ({setToken}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 

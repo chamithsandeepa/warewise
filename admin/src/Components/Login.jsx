@@ -1,16 +1,16 @@
-// src/Components/Login.jsx
 import axios from "axios";
 import React, { useState } from "react";
 import { backendURL } from "../App";
 import { toast } from "react-toastify";
 
-const Login = ({ setToken }) => {
+const Login = (setToken) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const onSubmitHandler = async (e) => {
     try {
       e.preventDefault();
+      // console.log(email,password);
       const response = await axios.post(backendURL + "/api/user/admin", {
         email,
         password,
@@ -33,12 +33,9 @@ const Login = ({ setToken }) => {
         <h1 className="text-2xl font-bold mb-4">Admin Panel</h1>
         <form onSubmit={onSubmitHandler} className="flex flex-col gap-4">
           <div className="mb-3 min-w-72">
-            <label
-              className="text-sm font-medium text-gray-700 mb-2"
-              htmlFor="email"
-            >
+            <p className="text-sm font-medium text-gray-700 mb-2">
               Email Address
-            </label>
+            </p>
             <input
               id="email"
               onChange={(e) => setEmail(e.target.value)}
@@ -50,12 +47,7 @@ const Login = ({ setToken }) => {
             />
           </div>
           <div className="mb-3 min-w-72">
-            <label
-              className="text-sm font-medium text-gray-700 mb-2"
-              htmlFor="password"
-            >
-              Password
-            </label>
+            <p className="text-sm font-medium text-gray-700 mb-2">Password</p>
             <input
               id="password"
               onChange={(e) => setPassword(e.target.value)}

@@ -5,21 +5,27 @@ import { ShopContext } from "../Context/ShopContext";
 
 const NavBar = () => {
   const [visible, setVisible] = useState(false);
-  const { setShowSearch, getCartCount, user, setUser } =
-    useContext(ShopContext);
-  const navigate = useNavigate();
+  const {
+    setShowSearch,
+    getCartCount,
+    navigate,
+    token,
+    setToken,
+    setCartItems,
+  } = useContext(ShopContext);
 
-  const logoutHandler = () => {
-    localStorage.removeItem("user");
-    setUser(null);
+  const logout = () => {
     navigate("/login");
+    localStorage.removeItem("token");
+    setToken("");
+    setCartItems({});
   };
 
-  const profileClickHandler = () => {
-    if (!user) {
-      navigate("/login");
-    }
-  };
+  // const profileClickHandler = () => {
+  //   if (!token) {
+  //     navigate("/login");
+  //   }
+  // };
 
   return (
     <div className="flex items-center justify-between py-5 font-medium">
@@ -57,9 +63,10 @@ const NavBar = () => {
             src={assets.profile_icon}
             className="w-5 cursor-pointer"
             alt=""
-            onClick={profileClickHandler}
+            onClick={() => (token ? null : navigate("/login"))}
           />
-          {user && (
+          {/* Drop Down */}
+          {token && (
             <div className="group-hover:block hidden absolute dropdown-menu right-0 pt-4 z-10">
               <div className="flex flex-col gap-2 w-36 py-3 px-5 bg-slate-100 text-gray-500 rounded">
                 <p className="cursor-pointer hover:text-black">My Profile</p>
@@ -69,10 +76,7 @@ const NavBar = () => {
                 >
                   Orders
                 </p>
-                <p
-                  onClick={logoutHandler}
-                  className="cursor-pointer hover:text-black"
-                >
+                <p onClick={logout} className="cursor-pointer hover:text-black">
                   Logout
                 </p>
               </div>

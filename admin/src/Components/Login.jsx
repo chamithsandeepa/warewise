@@ -1,35 +1,29 @@
 // src/Components/Login.jsx
 import axios from "axios";
 import React, { useState } from "react";
+import { backendURL } from "../App";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 
-const Login = ({ onLogin }) => {
+const Login = ({ setToken }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
 
   const onSubmitHandler = async (e) => {
-    e.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/v1/users/login",
-        { email, password }
-      );
-
-      const user = response.data;
-
-      if (user.role === "admin") {
-        localStorage.setItem("admin", JSON.stringify(user));
-        toast.success("Login successful!");
-        onLogin(); // Notify parent about successful login
-        navigate("/add"); // Navigate to dashboard
+      e.preventDefault();
+      const response = await axios.post(backendURL + "/api/user/admin", {
+        email,
+        password,
+      });
+      // console.log(response);
+      if (response.data.success) {
+        setToken(response.data.token);
       } else {
-        toast.error("Access denied. Not an admin.");
+        toast.error(response.data.message);
       }
     } catch (error) {
-      toast.error("Login failed. Please check your credentials.");
-      console.error("Login error:", error);
+      console.log(error);
+      toast.error(error.message);
     }
   };
 

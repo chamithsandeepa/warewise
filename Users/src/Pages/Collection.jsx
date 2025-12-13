@@ -187,9 +187,9 @@ const Collection = () => {
             <ProductItem
               key={index}
               name={item.name}
-              id={item.id} // Changed from item._id to item.id to match backend
+              id={item._id} // Changed from item._id to item.id to match backend
               price={item.price}
-              image={item.imageUrls} // Changed from item.image to item.imageUrls
+              image={item.image} // Changed from item.image to item.imageUrls
             />
           ))}
         </div>

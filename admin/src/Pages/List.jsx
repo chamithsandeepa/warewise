@@ -1,45 +1,44 @@
 import React, { useEffect, useState } from "react";
+import { currency } from "../App";
 import axios from "axios";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { currency } from "../App";
+import { backendURL } from "../App";
 
-const List = () => {
+const List = ({ token }) => {
   const [list, setList] = useState([]);
 
-  // ✅ Fetch all products
   const fetchList = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:8080/api/v1/products/list"
-      );
-      if (Array.isArray(response.data)) {
-        setList(response.data);
-        console.log("Product List:", response.data);
+      const response = await axios.get(backendURL + "/api/product/list", {
+        headers: { token },
+      });
+      if (response.data.success) {
+        setList(response.data.products);
       } else {
-        toast.error("Unexpected response format.");
+        toast.error(response.data.message);
       }
     } catch (error) {
-      console.error("Fetch error:", error);
-      toast.error("Failed to fetch products");
+      console.log(error);
+      toast.error(error.message);
     }
   };
 
-  // ✅ Remove product by ID
   const removeProduct = async (id) => {
     try {
-      const response = await axios.delete(
-        `http://localhost:8080/api/v1/products/remove/${id}`
+      const reponse = await axios.post(
+        backendURL + "/api/product/remove",
+        { id },
+        { headers: { token } }
       );
-      if (response.data.success) {
-        toast.success(response.data.message);
-        fetchList();
+      if (reponse.data.success) {
+        toast.success(reponse.data.message);
+        await fetchList();
       } else {
-        toast.error(response.data.message || "Failed to remove product");
+        toast.error(reponse.data.message);
       }
     } catch (error) {
-      console.error("Remove error:", error);
-      toast.error("Error removing product");
+      console.log(error);
+      toast.error(error.message);
     }
   };
 
@@ -66,7 +65,7 @@ const List = () => {
             className="grid grid-cols-[1fr_3fr_1fr] md:grid-cols-[1fr_3fr_1fr_1fr_1fr] items-center gap-2 py-1 px-2 border text-sm"
             key={index}
           >
-            <img className="w-12" src={item.imageUrls?.[0]} alt="product" />
+            <img className="w-12" src={item.image[0]} alt="product" />
             <p>{item.name}</p>
             <p>{item.category}</p>
             <p>
@@ -74,9 +73,8 @@ const List = () => {
               {item.price}
             </p>
             <p
-              onClick={() => removeProduct(item.id)} 
-              className="text-right md:text-center cursor-pointer text-lg text-red-600"
-              title="Delete Product"
+              onClick={() => removeProduct(item._id)}
+              className="text-right md:text-center cursor-pointer text-lg"
             >
               X
             </p>

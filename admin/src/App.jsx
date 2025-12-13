@@ -8,48 +8,34 @@ import Orders from "./Pages/Orders";
 import Login from "./Components/Login";
 import { ToastContainer } from "react-toastify";
 
-export const currency = "$"
+export const backendURL = import.meta.env.VITE_BACKEND_URL;
+export const currency = "$";
 
 const App = () => {
-  // Use state for login status
-  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
+  const [token, setToken] = useState(
+    localStorage.getItem("token") ? localStorage.getItem("token") : ""
+  );
 
-  // Sync state with localStorage on mount
   useEffect(() => {
-    const adminData = localStorage.getItem("admin");
-    setIsAdminLoggedIn(!!adminData);
-  }, []);
-
-  const location = useLocation();
-
-  // If not logged in and not on login page, redirect to login
-  if (!isAdminLoggedIn && location.pathname !== "/") {
-    return <Navigate to="/" replace />;
-  }
+    localStorage.setItem("token", token);
+  }, [token]);
 
   return (
     <div className="min-h-screen">
       <ToastContainer />
-      {!isAdminLoggedIn ? (
-        <Routes>
-          <Route
-            path="/"
-            element={<Login onLogin={() => setIsAdminLoggedIn(true)} />}
-          />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+      {token === "" ? (
+        <Login setToken={setToken} />
       ) : (
         <>
-          <Navbar onLogout={() => setIsAdminLoggedIn(false)} />
+          <Navbar setToken={setToken} />
           <hr />
           <div className="flex w-full bg-gray-50 min-h-screen">
             <Sidebar />
             <div className="w-[70%] mx-auto ml-[max(5vw,25px)] my-8 text-gray-600 text-base">
               <Routes>
-                <Route path="/add" element={<Add />} />
-                <Route path="/list" element={<List />} />
-                <Route path="/orders" element={<Orders />} />
-                <Route path="*" element={<Navigate to="/add" replace />} />
+                <Route path="/add" element={<Add token={token} />} />
+                <Route path="/list" element={<List token={token} />} />
+                <Route path="/orders" element={<Orders token={token} />} />
               </Routes>
             </div>
           </div>

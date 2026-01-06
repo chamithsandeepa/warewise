@@ -29,10 +29,10 @@ const RelatedProducts = ({ category, subCategory }) => {
         {related.map((item, index) => (
           <ProductItem
             key={index}
-            id={item.id} // ✅ Use 'id' instead of '_id' if you're standardizing
+            id={item._id} // ✅ Use 'id' instead of '_id' if you're standardizing
             name={item.name}
             price={item.price}
-            image={item.imageUrls} // ✅ Pass correct image field
+            image={item.image} // ✅ Pass correct image field
           />
         ))}
       </div>

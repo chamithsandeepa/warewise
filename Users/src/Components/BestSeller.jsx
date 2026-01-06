@@ -30,9 +30,9 @@ const BestSeller = () => {
         {bestSeller.map((item, index) => (
           <ProductItem
             key={index}
-            id={item.id} // Changed from item._id to item.id
+            id={item._id} // Changed from item._id to item.id
             name={item.name}
-            image={item.imageUrls} // Changed from item.image to item.imageUrls
+            image={item.image} // Changed from item.image to item.imageUrls
             price={item.price}
           />
         ))}

@@ -8,17 +8,19 @@ import { toast } from "react-toastify";
 
 const PlaceOrder = () => {
   const [method, setmethod] = useState("cod");
+
   const {
+    navigate,
+    backendUrl,
+    token,
     cartItems,
-    products,
+    setCartItems,
     getCartAmount,
     delivery_fee,
-    user,
-    navigate,
-    clearCart,
+    products,
   } = useContext(ShopContext);
 
-  const [deliveryInfo, setDeliveryInfo] = useState({
+  const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
@@ -30,54 +32,137 @@ const PlaceOrder = () => {
     phone: "",
   });
 
-  const handleChange = (e) => {
-    setDeliveryInfo({ ...deliveryInfo, [e.target.name]: e.target.value });
+  const onChangeHandler = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    setFormData((data) => ({ ...data, [name]: value }));
   };
 
-  const handlePlaceOrder = async () => {
-    // ✅ Check if user is logged in
-    if (!user || !user.id) {
-      toast.error("You must be logged in to place an order.");
-      return;
-    }
-
-    // ✅ Build orderedItems array with full product details
-    const orderedItems = [];
-    for (const productId in cartItems) {
-      const product = products.find((p) => p.id === productId);
-      if (!product) continue;
-
-      for (const size in cartItems[productId]) {
-        orderedItems.push({
-          product,
-          size,
-          quantity: cartItems[productId][size],
-        });
-      }
-    }
-
-    const orderData = {
-      userId: user.id,
-      items: orderedItems,
-      totalAmount: getCartAmount() + delivery_fee,
-      paymentMethod: method,
-      deliveryInfo,
-      timestamp: Date.now(),
-    };
-
+  const onSubmitHandler = async (event) => {
+    event.preventDefault();
     try {
-      await axios.post("http://localhost:8080/api/v1/orders/place", orderData);
-      toast.success("Order placed successfully!");
-      await clearCart();
-      navigate("/orders");
+      let orderItems = [];
+      for (const items in cartItems) {
+        for (const item in cartItems[items]) {
+          if (cartItems[items][item] > 0) {
+            const itemInfo = structuredClone(
+              products.find((product) => product._id === items)
+            );
+            if (itemInfo) {
+              itemInfo.size = item;
+              itemInfo.quantity = cartItems[items][item];
+              orderItems.push(itemInfo);
+            }
+          }
+        }
+      }
+
+      let orderData = {
+        address: formData,
+        items: orderItems,
+        amount: getCartAmount() + delivery_fee,
+      };
+
+      switch (method) {
+        //API calls for COD
+        case "cod":
+          const response = await axios.post(
+            backendUrl + "/api/order/place",
+            orderData,
+            { headers: { token } }
+          );
+          // console.log(response.data);
+          if (response.data.success) {
+            setCartItems({});
+            navigate("/orders");
+          } else {
+            toast.error(response.data.message);
+          }
+          break;
+        default:
+          break;
+      }
+
+      // console.log(orderItems);
     } catch (error) {
-      console.error("Order placement failed:", error);
-      toast.error("Order failed. Please try again.");
+      console.log(error);
+      toast.error(error.message);
     }
   };
+
+  // const {
+  //   cartItems,
+  //   products,
+  //   getCartAmount,
+  //   delivery_fee,
+  //   user,
+  //   navigate,
+  //   clearCart,
+  // } = useContext(ShopContext);
+
+  // const [deliveryInfo, setDeliveryInfo] = useState({
+  //   firstName: "",
+  //   lastName: "",
+  //   email: "",
+  //   street: "",
+  //   city: "",
+  //   state: "",
+  //   zipcode: "",
+  //   country: "",
+  //   phone: "",
+  // });
+
+  // const handleChange = (e) => {
+  //   setDeliveryInfo({ ...deliveryInfo, [e.target.name]: e.target.value });
+  // };
+
+  // const handlePlaceOrder = async () => {
+  //   // ✅ Check if user is logged in
+  //   if (!user || !user.id) {
+  //     toast.error("You must be logged in to place an order.");
+  //     return;
+  //   }
+
+  //   // ✅ Build orderedItems array with full product details
+  //   const orderedItems = [];
+  //   for (const productId in cartItems) {
+  //     const product = products.find((p) => p.id === productId);
+  //     if (!product) continue;
+
+  //     for (const size in cartItems[productId]) {
+  //       orderedItems.push({
+  //         product,
+  //         size,
+  //         quantity: cartItems[productId][size],
+  //       });
+  //     }
+  //   }
+
+  //   const orderData = {
+  //     userId: user.id,
+  //     items: orderedItems,
+  //     totalAmount: getCartAmount() + delivery_fee,
+  //     paymentMethod: method,
+  //     deliveryInfo,
+  //     timestamp: Date.now(),
+  //   };
+
+  //   try {
+  //     await axios.post("http://localhost:8080/api/v1/orders/place", orderData);
+  //     toast.success("Order placed successfully!");
+  //     await clearCart();
+  //     navigate("/orders");
+  //   } catch (error) {
+  //     console.error("Order placement failed:", error);
+  //     toast.error("Order failed. Please try again.");
+  //   }
+  // };
 
   return (
-    <div className="flex flex-col sm:flex-row justify-between gap-4 pt-5 sm:pt-14 min-h-[80vh] border-top">
+    <form
+      onSubmit={onSubmitHandler}
+      className="flex flex-col sm:flex-row justify-between gap-4 pt-5 sm:pt-14 min-h-[80vh] border-top"
+    >
       {/* Left Side - Delivery Info */}
       <div className="flex flex-col gap-4 w-full sm:max-w-[480px]">
         <div className="text-xl sm:text-xl my-3">
@@ -85,73 +170,100 @@ const PlaceOrder = () => {
         </div>
         <div className="flex gap-3">
           <input
+            required
+            onChnage={onChangeHandler}
+            name="firstName"
+            value={formData.firstName}
             className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
             placeholder="First Name"
             type="text"
-            name="firstName"
             onChange={handleChange}
           />
           <input
+            onChnage={onChangeHandler}
+            name="lastName"
+            value={formData.firstName}
             className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
             placeholder="Last Name"
             type="text"
-            name="lastName"
             onChange={handleChange}
           />
         </div>
         <input
+          required
+          onChnage={onChangeHandler}
+          name="email"
+          value={formData.email}
           className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
           placeholder="Email address"
           type="email"
-          name="email"
           onChange={handleChange}
         />
         <input
+          required
+          onChnage={onChangeHandler}
+          name="street"
+          value={formData.firstName}
           className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
           placeholder="Street"
           type="text"
-          name="street"
           onChange={handleChange}
         />
         <div className="flex gap-3">
           <input
+            required
+            onChnage={onChangeHandler}
+            name="city"
+            value={formData.city}
             className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
             placeholder="City"
             type="text"
-            name="city"
             onChange={handleChange}
           />
           <input
+            required
+            onChnage={onChangeHandler}
+            name="state"
+            value={formData.firstName}
             className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
             placeholder="State"
             type="text"
-            name="state"
             onChange={handleChange}
           />
         </div>
         <div className="flex gap-3">
           <input
+            required
+            onChnage={onChangeHandler}
+            name="zipcode"
+            value={formData.zipcode}
             className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
             placeholder="Zipcode"
             type="number"
-            name="zipcode"
             onChange={handleChange}
           />
           <input
+            required
+            onChnage={onChangeHandler}
+            name="country"
+            value={formData.country}
             className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
             placeholder="Country"
             type="text"
-            name="country"
             onChange={handleChange}
           />
         </div>
         <input
+          required
+          onChnage={onChangeHandler}
+          name="phone"
+          value={formData.phone}
           className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
           placeholder="Phone Number"
           type="tel"
-          name="phone"
           onChange={handleChange}
-        />
+        />{" "}
+        required
       </div>
 
       {/* Right Side - Payment */}
@@ -202,7 +314,7 @@ const PlaceOrder = () => {
 
           <div className="w-full text-end mt-8">
             <button
-              onClick={handlePlaceOrder}
+              type="submit"
               className="bg-black text-white text-sm px-16 py-3"
             >
               PLACE ORDER
@@ -210,7 +322,7 @@ const PlaceOrder = () => {
           </div>
         </div>
       </div>
-    </div>
+    </form>
   );
 };
 

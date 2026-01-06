@@ -1,64 +1,59 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ShopContext } from "../Context/ShopContext";
+import { useEffect } from "react";
 
 const Login = () => {
   const [currentState, setCurrentState] = useState("Sign Up");
+  const { token, setToken, navigate, backendUrl } = useContext(ShopContext);
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { setUser } = useContext(ShopContext);
-  const navigate = useNavigate();
-
   const onSubmitHandler = async (event) => {
     event.preventDefault();
-
-    if (!email || !password || (currentState === "Sign Up" && !name)) {
-      toast.error("Please fill in all required fields");
-      return;
-    }
-
     try {
-      if (currentState === "Login") {
-        // LOGIN
-        const response = await axios.post(
-          "http://localhost:8080/api/v1/users/login",
-          {
-            email,
-            password,
-          }
-        );
-        const userData = response.data;
-        localStorage.setItem("user", JSON.stringify(userData));
-        setUser(userData);
-        toast.success("Login successful");
-        navigate("/");
-      } else {
+      if (currentState === "Sign Up") {
         // SIGN UP
-        const response = await axios.post(
-          "http://localhost:8080/api/v1/users/register",
-          {
-            name,
-            email,
-            password,
-          }
-        );
-        const userData = response.data;
-        localStorage.setItem("user", JSON.stringify(userData));
-        setUser(userData);
-        toast.success("Registration successful");
-        navigate("/");
+        const response = await axios.post(backendUrl + "/api/user/register", {
+          name,
+          email,
+          password,
+        });
+        // console.log(response.data);
+        if (response.data.success) {
+          setToken(response.data.token);
+          localStorage.setItem("token", response.data.token);
+        } else {
+          toast.error(response.data.message);
+        }
+      } else {
+        // LOGIN
+        const response = await axios.post(backendUrl + "/api/user/login", {
+          email,
+          password,
+        });
+        // console.log(response.data);
+        if (response.data.success) {
+          setToken(response.data.token);
+          localStorage.setItem("token", response.data.token);
+        } else {
+          toast.error(response.data.message);
+        }
       }
     } catch (error) {
-      console.error("Auth error:", error);
-      toast.error(
-        error.response?.data || "Something went wrong. Please try again."
-      );
+      console.log(error);
+      toast.error(error.message);
     }
   };
+
+  useEffect(() => {
+    if (token) {
+      navigate("/");
+    }
+  }, [token]);
 
   return (
     <form

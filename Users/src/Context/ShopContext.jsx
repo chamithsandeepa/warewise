@@ -48,6 +48,10 @@ const ShopContextProvider = (props) => {
   // Add to cart
   // ======================
   const addToCart = async (itemId, size) => {
+    if (!size) {
+      toast.error("Please select a size");
+      return;
+    }
     let cartData = structuredClone(cartItems);
 
     if (cartData[itemId]) {
@@ -77,9 +81,9 @@ const ShopContextProvider = (props) => {
     }
   };
 
-  useEffect(() => {
-    console.log(cartItems);
-  }, [cartItems]);
+  // useEffect(() => {
+  //   console.log(cartItems);
+  // }, [cartItems]);
 
   // ======================
   // Update quantity / remove

@@ -171,99 +171,92 @@ const PlaceOrder = () => {
         <div className="flex gap-3">
           <input
             required
-            onChnage={onChangeHandler}
+            onChange={onChangeHandler}
             name="firstName"
             value={formData.firstName}
             className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
             placeholder="First Name"
             type="text"
-            onChange={handleChange}
           />
           <input
-            onChnage={onChangeHandler}
+            onChange={onChangeHandler}
             name="lastName"
-            value={formData.firstName}
+            value={formData.lastName}
             className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
             placeholder="Last Name"
             type="text"
-            onChange={handleChange}
+
           />
         </div>
         <input
           required
-          onChnage={onChangeHandler}
+          onChange={onChangeHandler}
           name="email"
           value={formData.email}
           className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
           placeholder="Email address"
           type="email"
-          onChange={handleChange}
+
         />
         <input
           required
-          onChnage={onChangeHandler}
+          onChange={onChangeHandler}
           name="street"
-          value={formData.firstName}
+          value={formData.street}
           className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
           placeholder="Street"
           type="text"
-          onChange={handleChange}
         />
         <div className="flex gap-3">
           <input
             required
-            onChnage={onChangeHandler}
+            onChange={onChangeHandler}
             name="city"
             value={formData.city}
             className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
             placeholder="City"
             type="text"
-            onChange={handleChange}
+
           />
           <input
             required
-            onChnage={onChangeHandler}
+            onChange={onChangeHandler}
             name="state"
-            value={formData.firstName}
+            value={formData.state}
             className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
             placeholder="State"
             type="text"
-            onChange={handleChange}
           />
         </div>
         <div className="flex gap-3">
           <input
             required
-            onChnage={onChangeHandler}
+            onChange={onChangeHandler}
             name="zipcode"
             value={formData.zipcode}
             className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
             placeholder="Zipcode"
             type="number"
-            onChange={handleChange}
           />
           <input
             required
-            onChnage={onChangeHandler}
+            onChange={onChangeHandler}
             name="country"
             value={formData.country}
             className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
             placeholder="Country"
             type="text"
-            onChange={handleChange}
           />
         </div>
         <input
           required
-          onChnage={onChangeHandler}
+          onChange={onChangeHandler}
           name="phone"
           value={formData.phone}
           className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
           placeholder="Phone Number"
           type="tel"
-          onChange={handleChange}
         />{" "}
-        required
       </div>
 
       {/* Right Side - Payment */}
@@ -274,6 +267,7 @@ const PlaceOrder = () => {
 
         <div className="mt-12">
           <Title text1={"PAYMENT"} text2={"METHOD"} />
+          {/* Payment method selection */}
           <div className="flex flex-col lg:flex-row gap-3">
             <div
               onClick={() => setmethod("stripe")}
@@ -286,7 +280,7 @@ const PlaceOrder = () => {
               ></p>
               <img className="h-5 mx-4" src={assets.stripe_logo} alt="" />
             </div>
-            <div
+            {/* <div
               onClick={() => setmethod("razorpay")}
               className="flex items-center gap-3 border p-2 px-3 cursor-pointer"
             >
@@ -296,7 +290,7 @@ const PlaceOrder = () => {
                 }`}
               ></p>
               <img className="h-5 mx-4" src={assets.razorpay_logo} alt="" />
-            </div>
+            </div> */}
             <div
               onClick={() => setmethod("cod")}
               className="flex items-center gap-3 border p-2 px-3 cursor-pointer"

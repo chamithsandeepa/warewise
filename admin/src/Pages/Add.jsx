@@ -29,7 +29,7 @@ const Add = ({ token }) => {
       formData.append("category", category);
       formData.append("subCategory", subCategory);
       formData.append("sizes", JSON.stringify(sizes));
-      formData.append("bestSeller", bestseller);
+      formData.append("bestseller", bestseller);
 
       if (image1) formData.append("image1", image1);
       if (image2) formData.append("image2", image2);

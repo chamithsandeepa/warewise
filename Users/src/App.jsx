@@ -12,25 +12,27 @@ import Orders from "./Pages/Orders";
 import NavBar from "./Components/NavBar";
 import Footer from "./Components/Footer";
 import SearchBar from "./Components/SearchBar";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 
 const App = () => {
   return (
-    <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw] bg-blue-50 min-h-screen">
+    <div className="bg-background min-h-screen flex flex-col font-outfit">
       <ToastContainer />
       <NavBar />
-      <SearchBar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/collection" element={<Collection />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/product/:productId" element={<Product />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/place-order" element={<PlaceOrder />} />
-        <Route path="/orders" element={<Orders />} />
-      </Routes>
+      <div className="flex-grow px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
+        <SearchBar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/collection" element={<Collection />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/product/:productId" element={<Product />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/place-order" element={<PlaceOrder />} />
+          <Route path="/orders" element={<Orders />} />
+        </Routes>
+      </div>
       <Footer />
     </div>
   );

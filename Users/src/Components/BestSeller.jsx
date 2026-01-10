@@ -15,10 +15,10 @@ const BestSeller = () => {
   }, [products]); // Added products as dependency
 
   return (
-    <div className="my-10">
+    <div className="my-20">
       <div className="text-center text-3xl py-8">
         <Title text1={"BEST"} text2={"SELLERS"} />
-        <p className="w-3/4 m-auto text-xs sm:text-sm md:text-base text-gray-600">
+        <p className="w-3/4 max-w-2xl m-auto text-xs sm:text-sm md:text-base text-gray-500 font-outfit leading-relaxed">
           Our most loved products chosen by thousands of satisfied customers.
           These best-selling items have earned their reputation through
           exceptional quality, outstanding value, and proven customer

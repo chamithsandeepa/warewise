@@ -65,7 +65,7 @@ const PlaceOrder = () => {
 
       switch (method) {
         //API calls for COD
-        case "cod":
+        case "cod": {
           const response = await axios.post(
             backendUrl + "/api/order/place",
             orderData,
@@ -79,24 +79,25 @@ const PlaceOrder = () => {
             toast.error(response.data.message);
           }
           break;
-        
-        case 'stripe':
-        //API calls for Stripe
-          const responseStripe = await axios.post(
-            backendUrl + "/api/order/stripe",
-            orderData,
-            { headers: { token } }
-          );
-          // console.log(responseStripe.data);
-          if (responseStripe.data.success) {
-            const {session_url} = responseStripe.data;
-            window.location.replace(session_url);
-          } else {
-            toast.error(responseStripe.data.message);
-          }
-          break;
-        default:
-          break;
+        }
+      case "stripe": {
+      //API calls for Stripe
+        const responseStripe = await axios.post(
+          backendUrl + "/api/order/stripe",
+          orderData,
+          { headers: { token } }
+        );
+        // console.log(responseStripe.data);
+        if (responseStripe.data.success) {
+          const {session_url} = responseStripe.data;
+          window.location.replace(session_url);
+        } else {
+          toast.error(responseStripe.data.message);
+        }
+        break;
+      }
+      default:
+        break;
       }
 
       // console.log(orderItems);
@@ -106,82 +107,14 @@ const PlaceOrder = () => {
     }
   };
 
-  // const {
-  //   cartItems,
-  //   products,
-  //   getCartAmount,
-  //   delivery_fee,
-  //   user,
-  //   navigate,
-  //   clearCart,
-  // } = useContext(ShopContext);
-
-  // const [deliveryInfo, setDeliveryInfo] = useState({
-  //   firstName: "",
-  //   lastName: "",
-  //   email: "",
-  //   street: "",
-  //   city: "",
-  //   state: "",
-  //   zipcode: "",
-  //   country: "",
-  //   phone: "",
-  // });
-
-  // const handleChange = (e) => {
-  //   setDeliveryInfo({ ...deliveryInfo, [e.target.name]: e.target.value });
-  // };
-
-  // const handlePlaceOrder = async () => {
-  //   // ✅ Check if user is logged in
-  //   if (!user || !user.id) {
-  //     toast.error("You must be logged in to place an order.");
-  //     return;
-  //   }
-
-  //   // ✅ Build orderedItems array with full product details
-  //   const orderedItems = [];
-  //   for (const productId in cartItems) {
-  //     const product = products.find((p) => p.id === productId);
-  //     if (!product) continue;
-
-  //     for (const size in cartItems[productId]) {
-  //       orderedItems.push({
-  //         product,
-  //         size,
-  //         quantity: cartItems[productId][size],
-  //       });
-  //     }
-  //   }
-
-  //   const orderData = {
-  //     userId: user.id,
-  //     items: orderedItems,
-  //     totalAmount: getCartAmount() + delivery_fee,
-  //     paymentMethod: method,
-  //     deliveryInfo,
-  //     timestamp: Date.now(),
-  //   };
-
-  //   try {
-  //     await axios.post("http://localhost:8080/api/v1/orders/place", orderData);
-  //     toast.success("Order placed successfully!");
-  //     await clearCart();
-  //     navigate("/orders");
-  //   } catch (error) {
-  //     console.error("Order placement failed:", error);
-  //     toast.error("Order failed. Please try again.");
-  //   }
-  // };
-
   return (
     <form
       onSubmit={onSubmitHandler}
-      className="flex flex-col sm:flex-row justify-between gap-4 pt-5 sm:pt-14 min-h-[80vh] border-top"
+      className="flex flex-col sm:flex-row justify-between gap-8 pt-5 sm:pt-14 min-h-[80vh] border-t border-gray-100"
     >
       {/* Left Side - Delivery Info */}
-      <div className="flex flex-col gap-4 w-full sm:max-w-[480px]">
-        <div className="text-xl sm:text-xl my-3">
+      <div className="flex flex-col gap-6 w-full sm:max-w-[480px]">
+        <div className="text-xl sm:text-2xl my-3">
           <Title text1={"DELIVERY"} text2={"INFORMATION"} />
         </div>
         <div className="flex gap-3">
@@ -190,7 +123,7 @@ const PlaceOrder = () => {
             onChange={onChangeHandler}
             name="firstName"
             value={formData.firstName}
-            className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+            className="border border-gray-300 rounded-md py-2.5 px-3.5 w-full focus:outline-none focus:border-black transition-colors bg-white font-outfit"
             placeholder="First Name"
             type="text"
           />
@@ -198,10 +131,9 @@ const PlaceOrder = () => {
             onChange={onChangeHandler}
             name="lastName"
             value={formData.lastName}
-            className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+            className="border border-gray-300 rounded-md py-2.5 px-3.5 w-full focus:outline-none focus:border-black transition-colors bg-white font-outfit"
             placeholder="Last Name"
             type="text"
-
           />
         </div>
         <input
@@ -209,17 +141,16 @@ const PlaceOrder = () => {
           onChange={onChangeHandler}
           name="email"
           value={formData.email}
-          className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+          className="border border-gray-300 rounded-md py-2.5 px-3.5 w-full focus:outline-none focus:border-black transition-colors bg-white font-outfit"
           placeholder="Email address"
           type="email"
-
         />
         <input
           required
           onChange={onChangeHandler}
           name="street"
           value={formData.street}
-          className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+          className="border border-gray-300 rounded-md py-2.5 px-3.5 w-full focus:outline-none focus:border-black transition-colors bg-white font-outfit"
           placeholder="Street"
           type="text"
         />
@@ -229,17 +160,16 @@ const PlaceOrder = () => {
             onChange={onChangeHandler}
             name="city"
             value={formData.city}
-            className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+            className="border border-gray-300 rounded-md py-2.5 px-3.5 w-full focus:outline-none focus:border-black transition-colors bg-white font-outfit"
             placeholder="City"
             type="text"
-
           />
           <input
             required
             onChange={onChangeHandler}
             name="state"
             value={formData.state}
-            className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+            className="border border-gray-300 rounded-md py-2.5 px-3.5 w-full focus:outline-none focus:border-black transition-colors bg-white font-outfit"
             placeholder="State"
             type="text"
           />
@@ -250,7 +180,7 @@ const PlaceOrder = () => {
             onChange={onChangeHandler}
             name="zipcode"
             value={formData.zipcode}
-            className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+            className="border border-gray-300 rounded-md py-2.5 px-3.5 w-full focus:outline-none focus:border-black transition-colors bg-white font-outfit"
             placeholder="Zipcode"
             type="number"
           />
@@ -259,7 +189,7 @@ const PlaceOrder = () => {
             onChange={onChangeHandler}
             name="country"
             value={formData.country}
-            className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+            className="border border-gray-300 rounded-md py-2.5 px-3.5 w-full focus:outline-none focus:border-black transition-colors bg-white font-outfit"
             placeholder="Country"
             type="text"
           />
@@ -269,54 +199,52 @@ const PlaceOrder = () => {
           onChange={onChangeHandler}
           name="phone"
           value={formData.phone}
-          className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+          className="border border-gray-300 rounded-md py-2.5 px-3.5 w-full focus:outline-none focus:border-black transition-colors bg-white font-outfit"
           placeholder="Phone Number"
           type="tel"
-        />{" "}
+        />
       </div>
 
       {/* Right Side - Payment */}
-      <div className="mt-8">
-        <div className="mt-8 min-w-80">
+      <div className="mt-8 lg:mt-0 w-full sm:max-w-[450px]">
+        <div className="mt-8 min-w-full bg-gray-50 p-6 rounded-lg">
           <CartTotal />
         </div>
 
         <div className="mt-12">
           <Title text1={"PAYMENT"} text2={"METHOD"} />
           {/* Payment method selection */}
-          <div className="flex flex-col lg:flex-row gap-3">
+          <div className="flex flex-col lg:flex-row gap-4 mt-6">
             <div
               onClick={() => setmethod("stripe")}
-              className="flex items-center gap-3 border p-2 px-3 cursor-pointer"
+              className={`flex items-center gap-3 border p-3 cursor-pointer rounded-lg transition-all duration-300 ${
+                method === "stripe" ? "border-green-500 bg-green-50" : "border-gray-200 hover:border-gray-300"
+              }`}
             >
-              <p
-                className={`min-w-3.5 h-3.5 border rounded-full ${
-                  method === "stripe" ? "bg-green-400" : ""
+              <div
+                className={`w-4 h-4 rounded-full border flex items-center justify-center ${
+                  method === "stripe" ? "border-green-500" : "border-gray-300"
                 }`}
-              ></p>
-              <img className="h-5 mx-4" src={assets.stripe_logo} alt="" />
+              >
+                  {method === "stripe" && <div className="w-2.5 h-2.5 bg-green-500 rounded-full"></div>}
+              </div>
+              <img className="h-5 mx-2 object-contain" src={assets.stripe_logo} alt="Stripe" />
             </div>
-            {/* <div
-              onClick={() => setmethod("razorpay")}
-              className="flex items-center gap-3 border p-2 px-3 cursor-pointer"
-            >
-              <p
-                className={`min-w-3.5 h-3.5 border rounded-full ${
-                  method === "razorpay" ? "bg-green-400" : ""
-                }`}
-              ></p>
-              <img className="h-5 mx-4" src={assets.razorpay_logo} alt="" />
-            </div> */}
+
             <div
               onClick={() => setmethod("cod")}
-              className="flex items-center gap-3 border p-2 px-3 cursor-pointer"
+              className={`flex items-center gap-3 border p-3 cursor-pointer rounded-lg transition-all duration-300 ${
+                method === "cod" ? "border-green-500 bg-green-50" : "border-gray-200 hover:border-gray-300"
+              }`}
             >
-              <p
-                className={`min-w-3.5 h-3.5 border rounded-full ${
-                  method === "cod" ? "bg-green-400" : ""
+              <div
+                className={`w-4 h-4 rounded-full border flex items-center justify-center ${
+                  method === "cod" ? "border-green-500" : "border-gray-300"
                 }`}
-              ></p>
-              <p className="text-gray-500 text-sm font-medium mx-4">
+              >
+                 {method === "cod" && <div className="w-2.5 h-2.5 bg-green-500 rounded-full"></div>}
+              </div>
+              <p className="text-gray-600 text-sm font-medium mx-2 font-outfit">
                 CASH ON DELIVERY
               </p>
             </div>
@@ -325,7 +253,7 @@ const PlaceOrder = () => {
           <div className="w-full text-end mt-8">
             <button
               type="submit"
-              className="bg-black text-white text-sm px-16 py-3"
+              className="bg-primary text-white text-sm px-16 py-3.5 rounded hover:bg-black transition-all shadow-md hover:shadow-lg font-medium tracking-wide w-full sm:w-auto"
             >
               PLACE ORDER
             </button>

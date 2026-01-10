@@ -56,7 +56,6 @@ import p_img52 from './p_img52.png'
 
 
 import WAREWISE from './WAREWISE.png'
-import logo from './logo.png'
 import hero from './hero.png'
 import about from './about.png'
 import contact from './contact.png'
@@ -80,7 +79,6 @@ import cross_icon from './cross_icon.png'
 
 export const assets = {
     WAREWISE,
-    logo,
     hero,
     about,
     contact,

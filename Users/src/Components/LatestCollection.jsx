@@ -22,10 +22,10 @@ const LatestCollection = () => {
   }, [products]); // Added products as dependency
 
   return (
-    <div className="my-10">
-      <div className="text-center py-8 text-3xl">
+    <div className="my-20">
+      <div className="text-center py-8">
         <Title text1={"LATEST"} text2={"COLLECTIONS"} />
-        <p className="w-3/4 m-auto text-xs sm:text-sm md:text-base text-gray-600">
+        <p className="w-3/4 max-w-2xl m-auto text-xs sm:text-sm md:text-base text-gray-500 font-outfit leading-relaxed">
           Discover our newest arrivals, carefully curated to bring you the
           latest trends and timeless classics. Each piece in our collection
           represents quality craftsmanship, contemporary style, and exceptional

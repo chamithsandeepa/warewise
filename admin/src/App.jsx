@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "./Components/Navbar";
 import Sidebar from "./Components/Sidebar";
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Add from "./Pages/Add";
 import List from "./Pages/List";
 import Orders from "./Pages/Orders";
@@ -21,15 +21,15 @@ const App = () => {
   }, [token]);
 
   return (
-    <div className="min-h-screen">
+    <div className="bg-background min-h-screen">
       <ToastContainer />
       {token === "" ? (
         <Login setToken={setToken} />
       ) : (
         <>
           <Navbar setToken={setToken} />
-          <hr />
-          <div className="flex w-full bg-gray-50 min-h-screen">
+          <hr className="border-gray-200" />
+          <div className="flex w-full min-h-screen">
             <Sidebar />
             <div className="w-[70%] mx-auto ml-[max(5vw,25px)] my-8 text-gray-600 text-base">
               <Routes>

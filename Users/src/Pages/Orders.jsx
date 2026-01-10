@@ -44,8 +44,8 @@ const Orders = () => {
   }, [token, backendUrl]);
 
   return (
-    <div className="border-t pt-16">
-      <div className="text-2xl">
+    <div className="border-t border-gray-100 pt-16">
+      <div className="text-2xl mb-12">
         <Title text1={"MY"} text2={"ORDERS"} />
       </div>
 
@@ -53,46 +53,50 @@ const Orders = () => {
         {orderData.map((item, index) => (
           <div
             key={index}
-            className="md:grid md:grid-cols-4 lg:grid-cols-5 md:gap-6 py-6 border-t border-b border-gray-200 text-gray-700 bg-white p-4 items-center"
+            className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-6 py-6 border border-gray-100 rounded-lg bg-white p-6 shadow-sm hover:shadow-soft transition-shadow"
           >
             {/* Product Info */}
-            <div className="col-span-2 lg:col-span-3 flex items-start gap-6 text-sm">
-              <img
-                className="w-16 sm:w-24 object-cover rounded-sm"
-                src={item.image[0]}
-                alt={item.name}
-              />
-              <div>
-                <p className="sm:text-base font-medium text-gray-900">{item.name}</p>
-                <div className="flex items-center gap-3 mt-2 text-base text-gray-700">
-                  <p className="text-lg font-bold">
-                    {currency}
-                    {item.price}
-                  </p>
-                  <p>Quantity: <span className="text-gray-900 font-medium">{item.quantity}</span></p>
-                  <p className="border bg-gray-50 px-2 py-0.5 rounded text-xs">{item.size}</p>
+            <div className="col-span-1 md:col-span-2 lg:col-span-3 flex items-start gap-6">
+              <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gray-50 rounded-md overflow-hidden flex-shrink-0">
+                 <img
+                    className="w-full h-full object-cover"
+                    src={item.image[0]}
+                    alt={item.name}
+                  />
+              </div>
+              <div className="flex flex-col justify-between h-full">
+                <div>
+                  <p className="text-base font-semibold text-primary font-outfit mb-1">{item.name}</p>
+                  <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 font-outfit">
+                    <p className="font-prata text-primary font-medium">
+                      {currency} {item.price}
+                    </p>
+                    <p>Qty: <span className="text-gray-900 font-medium">{item.quantity}</span></p>
+                    <p className="px-2 py-0.5 rounded-full bg-gray-50 border border-gray-100 text-xs text-gray-600 font-medium uppercase min-w-[2rem] text-center">
+                       {item.size}
+                    </p>
+                  </div>
                 </div>
-                <p className="mt-2 text-gray-400 text-sm">
-                  Date:{" "}
-                  <span className="text-gray-600">
-                    {new Date(item.date).toDateString()}
-                  </span>
-                </p>
-                <p className="mt-1 text-gray-400 text-sm">
-                  Payment:{" "}
-                  <span className="text-gray-600 uppercase">{item.paymentMethod}</span>
-                </p>
+                <div className="mt-3 space-y-1">
+                   <p className="text-xs text-gray-400">
+                    Ordered on: <span className="text-gray-600 font-medium">{new Date(item.date).toDateString()}</span>
+                   </p>
+                   <p className="text-xs text-gray-400">
+                    Payment: <span className="text-gray-600 font-medium uppercase">{item.paymentMethod}</span>
+                   </p>
+                </div>
               </div>
             </div>
 
             {/* Status & Action */}
-            <div className="col-span-2 lg:col-span-2 flex justify-between md:justify-end gap-x-10 items-center mt-4 md:mt-0">
+            <div className="col-span-1 md:col-span-2 lg:col-span-2 flex flex-col sm:flex-row md:flex-col lg:flex-row justify-between items-start sm:items-center md:items-end lg:items-center gap-4">
               <div className="flex items-center gap-2">
-                <p className="min-w-2 h-2 rounded-full bg-green-500"></p>
-                <p className="text-sm md:text-base font-medium text-gray-600">{item.status}</p>
+                <span className={`w-2.5 h-2.5 rounded-full ${item.status === 'Delivered' ? 'bg-green-500' : 'bg-green-500/50 animate-pulse'}`}></span>
+                <p className="text-sm font-medium text-gray-600">{item.status}</p>
               </div>
               <button
-                className="border border-gray-300 px-6 py-2 text-sm font-medium rounded-sm hover:bg-gray-50 transition-colors"
+                onClick={() => {}}
+                className="px-6 py-2.5 text-sm font-medium rounded-full border border-gray-200 text-gray-600 hover:text-primary hover:border-black hover:bg-gray-50 transition-all duration-300 w-full sm:w-auto"
               >
                 Track Order
               </button>

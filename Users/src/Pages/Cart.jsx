@@ -28,16 +28,12 @@ const Cart = () => {
   }, [cartItems, products]);
 
   return (
-    <div className="border-t pt-14 min-h-[80vh]">
-      <div className="text-2xl mb-3">
+    <div className="border-t border-gray-100 pt-14 min-h-[80vh]">
+      <div className="text-2xl mb-8">
         <Title text1={"YOUR"} text2={"CART"} />
       </div>
 
-      {/* {cartData.length === 0 ? (
-        <p className="text-gray-500 text-center mt-10">Your cart is empty.</p>
-      ) : (
-        <> */}
-      <div>
+      <div className="flex flex-col gap-4">
         {cartData.map((item, index) => {
           const productData = products.find(
             (product) => product._id === item._id
@@ -47,31 +43,31 @@ const Cart = () => {
           return (
             <div
               key={index}
-              className="py-4 border-t border-b text-gray-700 grid grid-cols-[4fr_0.5fr_0.5fr] sm:grid-cols-[4fr_2fr_0.5fr] items-center gap-4"
+              className="py-4 border-b border-gray-100 grid grid-cols-[4fr_0.5fr_0.5fr] sm:grid-cols-[4fr_2fr_0.5fr] items-center gap-4 hover:bg-gray-50/50 p-4 rounded-lg transition-colors"
             >
               <div className="flex items-start gap-6">
                 <img
-                  className="w-16 sm:w-20"
+                  className="w-16 sm:w-20 rounded-md object-cover"
                   src={productData.image[0]}
                   alt=""
                 />
                 <div>
-                  <p className="text-xs sm:text-lg font-medium">
+                  <p className="text-sm sm:text-lg font-medium text-primary font-outfit">
                     {productData.name}
                   </p>
                   <div className="flex items-center gap-5 mt-2">
-                    <p>
+                    <p className="font-prata font-medium text-lg">
                       {currency}
                       {productData.price}
                     </p>
-                    <p className="px-2 sm:px-3 sm:py-1 border bg-slate-50">
+                    <p className="px-3 py-1 border border-gray-200 bg-gray-50 rounded text-sm text-gray-600">
                       {item.size}
                     </p>
                   </div>
                 </div>
               </div>
               <input
-                className="border max-w-10 sm:max-w-20 px-1 sm:px-2 py-1"
+                className="border border-gray-200 max-w-16 sm:max-w-20 px-2 py-1 rounded text-center focus:outline-none focus:border-black transition-colors"
                 type="number"
                 min={1}
                 defaultValue={item.quantity}
@@ -87,7 +83,7 @@ const Cart = () => {
               />
               <img
                 onClick={() => updateQuantity(item._id, item.size, 0)}
-                className="w-4 mr-4 sm:w-5 cursor-pointer"
+                className="w-5 mr-4 cursor-pointer hover:scale-110 transition-transform opacity-70 hover:opacity-100"
                 src={assets.bin_icon}
                 alt="Remove item"
               />
@@ -102,15 +98,13 @@ const Cart = () => {
           <div className="w-full text-end">
             <button
               onClick={() => navigate("/place-order")}
-              className="bg-black text-white text-sm my-8 px-8 py-3"
+              className="bg-primary text-white text-sm my-8 px-8 py-3 rounded hover:bg-black transition-all shadow-md hover:shadow-lg font-medium tracking-wide"
             >
               PROCEED TO CHECKOUT
             </button>
           </div>
         </div>
       </div>
-      {/* </>
-      )} */}
     </div>
   );
 };

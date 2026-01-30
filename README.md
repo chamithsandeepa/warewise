@@ -68,27 +68,6 @@ You can view the live application here: **[Live Demo](#)** _(Add your deployment
 
 ---
 
-## 📁 Project Structure
-```
-warewise/
-├── client/               # Frontend React application
-│   ├── src/
-│   │   ├── components/  # Reusable components
-│   │   ├── pages/       # Page components
-│   │   ├── context/     # Context API for state management
-│   │   └── utils/       # Utility functions
-│   └── public/
-├── server/              # Backend Express application
-│   ├── controllers/     # Route controllers
-│   ├── models/          # MongoDB models
-│   ├── routes/          # API routes
-│   ├── middleware/      # Custom middleware
-│   └── config/          # Configuration files
-└── README.md
-```
-
----
-
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -190,31 +169,6 @@ warewise/
 - [ ] Multi-language support
 - [ ] Social media integration
 - [ ] Analytics dashboard for admin
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 📬 Contact
-
-* **Developer**: Chamith Sandeepa
-* **Email**: your.email@example.com _(Add your email)_
-* **LinkedIn**: [LinkedIn Profile](#) _(Add your LinkedIn)_
-* **GitHub**: [@chamithsandeepa](https://github.com/chamithsandeepa)
-* **Portfolio**: [Your Portfolio](#) _(Add your portfolio link)_
-
----
-
-## 🙏 Acknowledgments
-
-* Stripe for payment processing
-* Cloudinary for image management
-* MongoDB Atlas for database hosting
-* React and Node.js communities
 
 ---
 
